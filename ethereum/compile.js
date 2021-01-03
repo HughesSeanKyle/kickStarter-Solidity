@@ -22,10 +22,11 @@ fs.ensureDirSync(buildPath);
 // 7
 // Loop over output object, 
 // take each contract that exists inside, 
-// write it to a different file inside of build dir.
-for (let contract in output) {
-    fs.outputJSONSync(
-        path.resolve(buildPath, contract.replace(':', '') + '.json'),
+// write it to a different file inside of build dir (in json format).
+console.log(output);
+for (let contract in output) { // 7.1
+    fs.outputJSONSync( // 7.2
+        path.resolve(buildPath, `${contract.replace(':', '')}.json`), //7.3
         output[contract]
     );
 } 
@@ -65,4 +66,13 @@ The contracts keyword refers to the data (that we care about) we will be requiri
 
 // 6
 ensureDirSync - Checks to see if Dir exists. If it does not exist this function will create it. Entire line of code will create the build folder. 
+
+// 7
+// 7.1 - Refers to the keys inside the output object in this case 'Campaign' & 'Campaign Factory'
+// 7.2
+outputJSONSync - Write out json file to some specified folder. In this case taking the contract => compiling it to json format => puth in build folder.  
+// 7.3
+The replace line is just removing the colon in the KEY name abd replacing it with an empty string. 
+// 7.4
+Second Argument to outputJsonSync "output[contract]" - The actual contents that we want to write to this json file. This will 'pull off' just the contract information from the output object (**NB Note that contract in this loop refers to the KEYS inside the oject.)
 */
