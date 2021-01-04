@@ -14,6 +14,7 @@ let factory;
 let campaignAddress;    // 1.1
 let campaign;           // 1.2          
 
+// Code to run before each assertion check
 beforeEach(async () => {
     // get list of accounts
     accounts = await web3.eth.getAccounts();
@@ -39,6 +40,14 @@ beforeEach(async () => {
                     .Contract(JSON.parse(compiledCampaign.interface), 
                     campaignAddress
     );
+});
+
+// Assert that the factory and campaign contracts have been deployed
+describe('Campaigns', () => {
+    it('deploys a factory and a campaign', () => {
+        assert.ok(factory.options.address);
+        assert.ok(campaign.options.address);
+    });
 });
 
 
