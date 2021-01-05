@@ -64,6 +64,21 @@ describe('Campaigns', () => {
         const isContributer = await campaign.methods.approvers(accounts[1]).call(); // 6.1 
         assert(isContributer); // 6.2
     });
+    // Assert campaign has minimum contribution tied to it
+    // Note we want below test to fail in order to make test pass (using try/catch)
+    it('requires a minimum contribution', async () => {
+        try {
+            // Purposefully send < 100 WEI to trigger require in smart contract
+            // Will immediately throw to catch block
+            await campaign.methods.contribute().send({
+                value: '5',
+                from: accounts[1]
+            });
+            assert(false); // 7
+        } catch (err) {
+            assert(err); // 7.1 
+        }
+    });
 });
 
 
@@ -119,5 +134,11 @@ approvers = function that allows us to access mapping with list of contributers/
 
 // 6.2
 Assert will fail if falsy value passed in. If isContributor === true then test will pass.
+
+// 7
+If this line executed test will fail
+
+// 7.1 
+Assert that there is in fact an error. 
 */
 
