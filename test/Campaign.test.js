@@ -56,7 +56,7 @@ describe('Campaigns', () => {
     });
     // Assert that people can donate money to campaign &
     // donor gets marked as an approver/contributer
-    it('Allows people to contribute moey and marks them as approvers', async () => {
+    it('Allows people to contribute money and marks them as approvers', async () => {
         await campaign.methods.contribute().send({
             value: '200',
             from: accounts[1] // 6
@@ -78,6 +78,20 @@ describe('Campaigns', () => {
         } catch (err) {
             assert(err); // 7.1 
         }
+    });
+    // Assert that manager has abilty to create payment request
+    it('Allows a manager to make a payment request', async () => {
+        await campaign.methods
+            .createRequest('Buy batteries', '100', accounts[1])
+            .send({
+                from: accounts[0],
+                gas: '1000000'
+            });
+        const request = await campaign.methods.requests(0).call(); // 8
+
+        // Just write one assertion for one property in request struct
+        // can write more though
+        assert.equal('Buy batteries', request.description); // 8.1
     });
 });
 
@@ -140,5 +154,11 @@ If this line executed test will fail
 
 // 7.1 
 Assert that there is in fact an error. 
+
+// 8
+This request comes from the struct
+
+// 8.1
+'But betteries' will be added as the first request in the request struct thus we compair it to request at index 0. 
 */
 
