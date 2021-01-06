@@ -93,6 +93,50 @@ describe('Campaigns', () => {
         // can write more though
         assert.equal('Buy batteries', request.description); // 8.1
     });
+
+    // End to End Testing starts here - More notes below V143
+    it('processes requests', async () => {
+        // Retrieve Balance before request finalization
+        let balanceBefore = await web3.eth.getBalance(accounts[1]);
+        balanceBefore = web3.utils.fromWei(balanceBefore, 'ether');
+        // convert to decimal value
+        balanceBefore = parseFloat(balanceBefore);
+        console.log(`Balance Before: ${balanceBefore}`);
+
+        // Contribute to Campaign
+        await campaign.methods.contribute().send({
+            from: accounts[0],
+            value: web3.utils.toWei('10', 'ether')
+        });
+
+        // Create a request - send some of 10eth to different account
+        // Accessed by campaign manager
+        await campaign.methods // 9
+            .createRequest('A', web3.utils.toWei('5', 'ether'), accounts[1])
+            .send({ from: accounts[0], gas: '1000000' });
+
+        // Vote on request before sending to target account
+        // Call approve request method. So far only one request made. Therefore index 0 used
+        await campaign.methods.approveRequests(0).send({
+            from: accounts[0],
+            gas: '1000000'
+        });
+
+        // Finalize Request // 10
+        await campaign.methods.finalizeRequest(0).send({
+            from: accounts[0],
+            gas: '1000000'
+        }); 
+
+        // Retrieve balance of accounts[1] and verify receipt. 
+        let balanceAfter = await web3.eth.getBalance(accounts[1]); // 11
+        // Convert balanceAfter to ether
+        balanceAfter = web3.utils.fromWei(balanceAfter, 'ether');
+        // convert to decimal value
+        balanceAfter = parseFloat(balanceAfter);
+        console.log(`Balance After: ${balanceAfter}`);
+        assert(balanceAfter > balanceBefore);
+    });
 });
 
 
@@ -160,5 +204,26 @@ This request comes from the struct
 
 // 8.1
 'But betteries' will be added as the first request in the request struct thus we compair it to request at index 0. 
+
+// V143 - End to end Testing
+Want to write a test that really captures everything the campaign does from start to finnish
+ - Take campaign and contribute to it
+ - Want to create a request 
+ - Approve request 
+ - Finalize request
+ - At the end Assert some other party received some money from the request
+
+//  9
+createRequest arguments (See struct in contract)
+Arg1: Description of request
+Arg2: Amount of money to trf - Note that the initial 10Eth is locked in contract till request approved
+Arg3: Address to trf to 
+
+// 10
+finalizeRequest(0) - Pass in index of request you want to finalize. This wil disburse the money from the contract over to accounts[1]
+In this contract accounts[0] refers to the manager and only the manager can finalize this request. 
+
+// 11
+balance = string representing balance of address in WEI
 */
 
