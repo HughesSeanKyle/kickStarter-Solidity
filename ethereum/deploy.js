@@ -26,11 +26,5 @@ const deploy = async () => {
 };
 deploy();
 
-/*
-Deployed from
-0xdBB3C11A3ded56D19bc65F12FdA2811
 
-Address of newly created contract
-0x89C2555d4A0f0d5F85af7c34e267C3B46351893D
- */
 
