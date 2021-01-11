@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
+import factory from '../ethereum/factory';
 
-export default () => {
-    return <h1>This is the campaign list page!!</h1>;
-};
+class CampaignIndex extends Component {
+    async componentDidMount() {
+        // Return an array of all deployed campaigns. 
+        const campaigns = await factory.methods.getDeployedCampaigns().call();
+
+        console.log(campaigns);
+    }
+
+    // Dummy JSX to avoid any errors on compilation
+    render() {
+        return <div>Campaigns Index!</div>
+    }
+}
+
+// Next.js requires an export of component
+export default CampaignIndex;
 
 // Next.js detects this page as the Root Route based on the naming inside the pages direcory. 
