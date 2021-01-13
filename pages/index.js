@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Card } from 'semantic-ui-react';
+
 import factory from '../ethereum/factory';
 
 class CampaignIndex extends Component {
@@ -8,8 +10,21 @@ class CampaignIndex extends Component {
         return { campaigns }; // 1.1 
     }
 
+    // Create card group component
+    renderCampaigns() {
+        const items = this.props.campaigns.map(address => { // 3.1
+            return {
+                header: address,
+                description: <a>View campaign</a>,
+                fluid: true // 3.2
+            };
+        });
+
+        return <Card.Group items={items} />;
+    }
+
     render() {
-        return <div>{this.props.campaigns[0]}</div> // 2
+        return <div>{this.renderCampaigns()}</div> // 2
     }
 }
 
@@ -32,4 +47,11 @@ prior to es2015 condense refactor
 
 // 2
 This component is rendered both on the server and once everything loads up it is executed on the client side as well. 
+
+// 3.1
+This is an array
+
+// 3.2 
+Every card will stretch the entire width of it's container. 
+
 */
