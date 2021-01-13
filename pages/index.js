@@ -24,7 +24,12 @@ class CampaignIndex extends Component {
     }
 
     render() {
-        return <div>{this.renderCampaigns()}</div> // 2
+        return ( 
+            <div>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"></link>
+                {this.renderCampaigns()}
+            </div> // 2
+        );
     }
 }
 
