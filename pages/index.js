@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, Button } from 'semantic-ui-react';
 
 import factory from '../ethereum/factory';
 
@@ -28,7 +28,12 @@ class CampaignIndex extends Component {
             <div>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"></link>
                 {this.renderCampaigns()}
-            </div> // 2
+                <Button 
+                    content="Create Campaign"
+                    icon="add circle"
+                    primary
+                />
+            </div> // 2 // 2.1
         );
     }
 }
@@ -52,6 +57,10 @@ prior to es2015 condense refactor
 
 // 2
 This component is rendered both on the server and once everything loads up it is executed on the client side as well. 
+
+// 2.1 
+The test primary is equivalent to saying primary = {true}.
+Add specific styling to button which is indicative of a primary button.  
 
 // 3.1
 This is an array
