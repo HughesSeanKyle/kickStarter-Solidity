@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, Button } from 'semantic-ui-react';
 
 import factory from '../ethereum/factory';
+import Layout from '../components/Layout';
 
 class CampaignIndex extends Component {
     static async getInitialProps() { // 1
@@ -24,16 +25,22 @@ class CampaignIndex extends Component {
     }
 
     render() {
-        return ( 
-            <div>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"></link>
-                {this.renderCampaigns()}
-                <Button 
-                    content="Create Campaign"
-                    icon="add circle"
-                    primary
-                />
-            </div> // 2 // 2.1
+        return ( // 2 // 2.1 // 2.2
+            <Layout>
+                <div>
+                    <link 
+                        rel="stylesheet" 
+                        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"     
+                    />
+                    <h3>Open Campaigns</h3>
+                    {this.renderCampaigns()}
+                    <Button 
+                        content="Create Campaign"
+                        icon="add circle"
+                        primary
+                    />
+                </div> 
+            </Layout>
         );
     }
 }
@@ -61,6 +68,9 @@ This component is rendered both on the server and once everything loads up it is
 // 2.1 
 The test primary is equivalent to saying primary = {true}.
 Add specific styling to button which is indicative of a primary button.  
+
+// 2.2
+When the JSX is inside of the Layout tags it is passed in as a property called children
 
 // 3.1
 This is an array
