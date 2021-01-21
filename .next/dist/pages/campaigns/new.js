@@ -71,7 +71,8 @@ var CampaignNew = function (_Component) {
         }
 
         return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = CampaignNew.__proto__ || (0, _getPrototypeOf2.default)(CampaignNew)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            minimumContribution: ''
+            minimumContribution: '',
+            errorMessage: ''
         }, _this.onSubmit = function () {
             var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
                 var accounts;
@@ -81,23 +82,36 @@ var CampaignNew = function (_Component) {
                             case 0:
                                 event.preventDefault();
 
-                                _context.next = 3;
+                                _context.prev = 1;
+                                _context.next = 4;
                                 return _web2.default.eth.getAccounts();
 
-                            case 3:
+                            case 4:
                                 accounts = _context.sent;
-                                _context.next = 6;
-                                return _factory2.default.methods.createCampaign(_this.state.minimumContribution) // 1.2
-                                .send({
+                                _context.next = 7;
+                                return _factory2.default.methods.createCampaign(_this.state.minimumContribution).send({
                                     from: accounts[0]
                                 });
 
-                            case 6:
+                            case 7:
+                                _context.next = 12;
+                                break;
+
+                            case 9:
+                                _context.prev = 9;
+                                _context.t0 = _context['catch'](1);
+
+                                _this.setState({ errorMessage: _context.t0.message });
+
+                            case 12:
+                                ;
+
+                            case 13:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, _this2);
+                }, _callee, _this2, [[1, 9]]);
             }));
 
             return function (_x) {
@@ -114,29 +128,30 @@ var CampaignNew = function (_Component) {
         value: function render() {
             var _this3 = this;
 
+            // 1.1
             return _react2.default.createElement(_Layout2.default, {
                 __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 27
+                    lineNumber: 30
                 }
             }, _react2.default.createElement('h3', {
                 __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 28
+                    lineNumber: 31
                 }
-            }, 'Create a Campaign'), _react2.default.createElement(_semanticUiReact.Form, { onSubmit: this.onSubmit, __source: {
+            }, 'Create a Campaign'), _react2.default.createElement(_semanticUiReact.Form, { onSubmit: this.onSubmit, error: !!this.state.errorMessage, __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 30
+                    lineNumber: 33
                 }
             }, _react2.default.createElement(_semanticUiReact.Form.Field, {
                 __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 31
+                    lineNumber: 34
                 }
             }, _react2.default.createElement('label', {
                 __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 32
+                    lineNumber: 35
                 }
             }, 'Minimum Contribution'), _react2.default.createElement(_semanticUiReact.Input, {
                 label: 'wei',
@@ -147,11 +162,15 @@ var CampaignNew = function (_Component) {
                 },
                 __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 33
+                    lineNumber: 36
                 }
-            })), _react2.default.createElement(_semanticUiReact.Button, { primary: true, __source: {
+            })), _react2.default.createElement(_semanticUiReact.Message, { error: true, header: 'Oops!', content: this.state.errorMessage, __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 41
+                    lineNumber: 44
+                }
+            }), _react2.default.createElement(_semanticUiReact.Button, { primary: true, __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 45
                 }
             }, 'Create!')));
         }
@@ -164,11 +183,21 @@ exports.default = CampaignNew;
 
 /*
 //1.1
-By default the browser will try to submit the form to a backend server. In this case we want to avoid the default behaviour.
+<Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
 
-Whenever a function is called on a contract it will always be asynchronous in nature. 
+The reason why error is set to initial state of errorMessage because an empty string is a falsey value and in this case the error message is only displayed if the error message state is truthy. 
 
 // 1.2
-When callin the createCampaign function in the browser we do not have to specify the gas amount as metmask will automatically calculate the gas. 
+error={!!this.state.errorMessage}
+First exclamation mark will take this value and flip it into the opposite value as it's boolean form (from falsy to truthy)
+Second exclamation mark will will reverse first one's effect. 
+
+example:
+!"truthy value"      => false
+!!"truthy value"     => true
+
+!!""                 => false
+""                   => false/y
+!""                  => true/truthy
 */
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhZ2VzXFxjYW1wYWlnbnNcXG5ldy5qcyJdLCJuYW1lcyI6WyJSZWFjdCIsIkNvbXBvbmVudCIsIkZvcm0iLCJCdXR0b24iLCJJbnB1dCIsIkxheW91dCIsImZhY3RvcnkiLCJ3ZWIzIiwiQ2FtcGFpZ25OZXciLCJzdGF0ZSIsIm1pbmltdW1Db250cmlidXRpb24iLCJvblN1Ym1pdCIsImV2ZW50IiwicHJldmVudERlZmF1bHQiLCJldGgiLCJnZXRBY2NvdW50cyIsImFjY291bnRzIiwibWV0aG9kcyIsImNyZWF0ZUNhbXBhaWduIiwic2VuZCIsImZyb20iLCJzZXRTdGF0ZSIsInRhcmdldCIsInZhbHVlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsQUFBTyxBQUFTOzs7O0FBQ2hCLEFBQVMsQUFBTSxBQUFROztBQUV2QixBQUFPLEFBQVk7Ozs7QUFDbkIsQUFBTyxBQUFhOzs7O0FBQ3BCLEFBQU8sQUFBVTs7Ozs7Ozs7O0ksQUFFWDs7Ozs7Ozs7Ozs7Ozs7OzBOLEFBQ0Y7aUMsQUFBUSxBQUNpQjtBQURqQixBQUNKLGlCLEFBSUo7aUdBQVcsaUJBQUEsQUFBTyxPQUFQO29CQUFBOzhFQUFBOzhCQUFBO3lEQUFBO2lDQUNQO3NDQURPLEFBQ1AsQUFBTTs7Z0RBREM7dUNBR2dCLGNBQUEsQUFBSyxJQUhyQixBQUdnQixBQUFTOztpQ0FBMUI7QUFIQyxvREFBQTtnREFBQTt5REFJRCxBQUFRLFFBQVIsQUFDRCxlQUFlLE1BQUEsQUFBSyxNQURuQixBQUN5QixxQkFEekIsQUFDOEM7QUFEOUMsaUNBQUEsQUFFRDswQ0FDUyxTQVBQLEFBSUQsQUFFSSxBQUNJLEFBQVM7QUFEYixBQUNGOztpQ0FQRDtpQ0FBQTtnREFBQTs7QUFBQTs0QkFBQTtBOzs7Ozs7QUFEWDs7Ozs7OztpQ0FZVTt5QkFDTjs7bUNBQ0ksQUFBQzs7OEJBQUQ7Z0NBQUEsQUFDSTtBQURKO0FBQUEsYUFBQSxrQkFDSSxjQUFBOzs4QkFBQTtnQ0FBQTtBQUFBO0FBQUEsZUFESixBQUNJLEFBRUEsc0NBQUEsQUFBQyx1Q0FBSyxVQUFVLEtBQWhCLEFBQXFCOzhCQUFyQjtnQ0FBQSxBQUNJO0FBREo7K0JBQ0ssY0FBRCxzQkFBQSxBQUFNOzs4QkFBTjtnQ0FBQSxBQUNJO0FBREo7QUFBQSwrQkFDSSxjQUFBOzs4QkFBQTtnQ0FBQTtBQUFBO0FBQUEsZUFESixBQUNJLEFBQ0EseUNBQUEsQUFBQzt1QkFBRCxBQUNVLEFBQ047K0JBRkosQUFFa0IsQUFDZDt1QkFBTyxLQUFBLEFBQUssTUFIaEIsQUFHc0IsQUFDbEI7MEJBQVUseUJBQUE7MkJBQVMsT0FBQSxBQUFLLFNBQVMsRUFBRSxxQkFBcUIsTUFBQSxBQUFNLE9BQXBELEFBQVMsQUFBYyxBQUFvQztBQUp6RTs7OEJBQUE7Z0NBSFIsQUFDSSxBQUVJLEFBUUo7QUFSSTtBQUNJLGlDQU9SLEFBQUMseUNBQU8sU0FBUjs4QkFBQTtnQ0FBQTtBQUFBO2VBZlosQUFDSSxBQUdJLEFBV0ksQUFJZjs7Ozs7QSxBQXJDcUIsQUF3QzFCOztrQkFBQSxBQUFlOztBQUVmIiwiZmlsZSI6Im5ldy5qcz9lbnRyeSIsInNvdXJjZVJvb3QiOiJDOi9Vc2Vycy9LeWxlL0Rlc2t0b3AvQWxsIGRvY3MgbmVlZGVkMjAyMC4xLjQvQmxvY2tjaGFpbiBDb3Vyc2UvU3RlcGhlbl9FdGhlcmV1bS1Xb3Jrc3BhY2UvU2VjdGlvbl82LUtpY2tTdGFydGVyUHJvamVjdCJ9
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhZ2VzXFxjYW1wYWlnbnNcXG5ldy5qcyJdLCJuYW1lcyI6WyJSZWFjdCIsIkNvbXBvbmVudCIsIkZvcm0iLCJCdXR0b24iLCJJbnB1dCIsIk1lc3NhZ2UiLCJMYXlvdXQiLCJmYWN0b3J5Iiwid2ViMyIsIkNhbXBhaWduTmV3Iiwic3RhdGUiLCJtaW5pbXVtQ29udHJpYnV0aW9uIiwiZXJyb3JNZXNzYWdlIiwib25TdWJtaXQiLCJldmVudCIsInByZXZlbnREZWZhdWx0IiwiZXRoIiwiZ2V0QWNjb3VudHMiLCJhY2NvdW50cyIsIm1ldGhvZHMiLCJjcmVhdGVDYW1wYWlnbiIsInNlbmQiLCJmcm9tIiwic2V0U3RhdGUiLCJtZXNzYWdlIiwidGFyZ2V0IiwidmFsdWUiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxBQUFPLEFBQVM7Ozs7QUFDaEIsQUFBUyxBQUFNLEFBQVEsQUFBTzs7QUFFOUIsQUFBTyxBQUFZOzs7O0FBQ25CLEFBQU8sQUFBYTs7OztBQUNwQixBQUFPLEFBQVU7Ozs7Ozs7OztJLEFBRVg7Ozs7Ozs7Ozs7Ozs7OzswTixBQUNGO2lDQUFRLEFBQ2lCLEFBQ3JCOzBCLEFBRkksQUFFVTtBQUZWLEFBQ0osaUIsQUFLSjtpR0FBVyxpQkFBQSxBQUFNLE9BQU47b0JBQUE7OEVBQUE7OEJBQUE7eURBQUE7aUNBQ1A7c0NBRE8sQUFDUCxBQUFNOztnREFEQztnREFBQTt1Q0FJb0IsY0FBQSxBQUFLLElBSnpCLEFBSW9CLEFBQVM7O2lDQUExQjtBQUpILG9EQUFBO2dEQUFBO3lEQUtHLEFBQVEsUUFBUixBQUFnQixlQUFlLE1BQUEsQUFBSyxNQUFwQyxBQUEwQyxxQkFBMUMsQUFBK0Q7MENBQzNELFNBTlAsQUFLRyxBQUFvRSxBQUNoRSxBQUFTO0FBRHVELEFBQ3RFLGlDQURFOztpQ0FMSDtnREFBQTtBQUFBOztpQ0FBQTtnREFBQTtnRUFTSDs7c0NBQUEsQUFBSyxTQUFTLEVBQUUsY0FBYyxZQVQzQixBQVNILEFBQWMsQUFBb0I7O2lDQUNyQztBQVZNOztpQ0FBQTtpQ0FBQTtnREFBQTs7QUFBQTt5Q0FBQTtBOzs7Ozs7QUFEWDs7Ozs7OztpQ0FjVTt5QkFBRTs7QUFDUjttQ0FDSSxBQUFDOzs4QkFBRDtnQ0FBQSxBQUNJO0FBREo7QUFBQSxhQUFBLGtCQUNJLGNBQUE7OzhCQUFBO2dDQUFBO0FBQUE7QUFBQSxlQURKLEFBQ0ksQUFFQSxzQ0FBQSxBQUFDLHVDQUFLLFVBQVUsS0FBaEIsQUFBcUIsVUFBVSxPQUFPLENBQUMsQ0FBQyxLQUFBLEFBQUssTUFBN0MsQUFBbUQ7OEJBQW5EO2dDQUFBLEFBQ0k7QUFESjsrQkFDSyxjQUFELHNCQUFBLEFBQU07OzhCQUFOO2dDQUFBLEFBQ0k7QUFESjtBQUFBLCtCQUNJLGNBQUE7OzhCQUFBO2dDQUFBO0FBQUE7QUFBQSxlQURKLEFBQ0ksQUFDQSx5Q0FBQSxBQUFDO3VCQUFELEFBQ1UsQUFDTjsrQkFGSixBQUVrQixBQUNkO3VCQUFPLEtBQUEsQUFBSyxNQUhoQixBQUdzQixBQUNsQjswQkFBVSx5QkFBQTsyQkFBUyxPQUFBLEFBQUssU0FBUyxFQUFFLHFCQUFxQixNQUFBLEFBQU0sT0FBcEQsQUFBUyxBQUFjLEFBQW9DO0FBSnpFOzs4QkFBQTtnQ0FIUixBQUNJLEFBRUksQUFRSjtBQVJJO0FBQ0ksaUNBT1IsQUFBQywwQ0FBUSxPQUFULE1BQWUsUUFBZixBQUFzQixTQUFRLFNBQVMsS0FBQSxBQUFLLE1BQTVDLEFBQWtEOzhCQUFsRDtnQ0FYSixBQVdJLEFBQ0E7QUFEQTtnQ0FDQSxBQUFDLHlDQUFPLFNBQVI7OEJBQUE7Z0NBQUE7QUFBQTtlQWhCWixBQUNJLEFBR0ksQUFZSSxBQUlmOzs7OztBLEFBekNxQixBQTRDMUI7O2tCQUFBLEFBQWU7O0FBRWYiLCJmaWxlIjoibmV3LmpzP2VudHJ5Iiwic291cmNlUm9vdCI6IkM6L1VzZXJzL0t5bGUvRGVza3RvcC9BbGwgZG9jcyBuZWVkZWQyMDIwLjEuNC9CbG9ja2NoYWluIENvdXJzZS9TdGVwaGVuX0V0aGVyZXVtLVdvcmtzcGFjZS9TZWN0aW9uXzYtS2lja1N0YXJ0ZXJQcm9qZWN0In0=

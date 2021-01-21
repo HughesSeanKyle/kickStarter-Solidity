@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Input } from 'semantic-ui-react';
+import { Form, Button, Input, Message } from 'semantic-ui-react';
 
 import Layout from '../../components/Layout';
 import factory from '../../ethereum/factory';
@@ -7,27 +7,30 @@ import web3 from '../../ethereum/web3';
 
 class CampaignNew extends Component {
     state = {
-        minimumContribution: ''
+        minimumContribution: '',
+        errorMessage: ''
     };
 
     // 1.1 
-    onSubmit = async (event) => {
+    onSubmit = async event => {
         event.preventDefault();
 
-        const accounts = await web3.eth.getAccounts();
-        await factory.methods
-            .createCampaign(this.state.minimumContribution) // 1.2
-            .send({
+        try {
+            const accounts = await web3.eth.getAccounts();
+            await factory.methods.createCampaign(this.state.minimumContribution).send({
                 from: accounts[0]
             });
+        } catch (err) {
+            this.setState({ errorMessage: err.message });
+        };
     };
 
-    render () {
+    render () { // 1.1
         return (
             <Layout>
                 <h3>Create a Campaign</h3>
 
-                <Form onSubmit={this.onSubmit}>
+                <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
                     <Form.Field>
                         <label>Minimum Contribution</label>
                         <Input 
@@ -38,6 +41,7 @@ class CampaignNew extends Component {
                         />
                     </Form.Field>
 
+                    <Message error header="Oops!" content={this.state.errorMessage} />
                     <Button primary>Create!</Button>
                 </Form>
             </Layout>
@@ -49,10 +53,20 @@ export default CampaignNew;
 
 /*
 //1.1
-By default the browser will try to submit the form to a backend server. In this case we want to avoid the default behaviour.
+<Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
 
-Whenever a function is called on a contract it will always be asynchronous in nature. 
+The reason why error is set to initial state of errorMessage because an empty string is a falsey value and in this case the error message is only displayed if the error message state is truthy. 
 
 // 1.2
-When callin the createCampaign function in the browser we do not have to specify the gas amount as metmask will automatically calculate the gas. 
+error={!!this.state.errorMessage}
+First exclamation mark will take this value and flip it into the opposite value as it's boolean form (from falsy to truthy)
+Second exclamation mark will will reverse first one's effect. 
+
+example:
+!"truthy value"      => false
+!!"truthy value"     => true
+
+!!""                 => false
+""                   => false/y
+!""                  => true/truthy
 */
