@@ -113,6 +113,33 @@ contract Campaign {
 
         request.complete = true;
     }
+
+    // Get details of one indiviual campaign
+    // "this" is a reference to the contract itself
+    function getSummary()
+        public
+        view
+        returns (
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            address
+        )
+    {
+        return (
+            minimumContribution,
+            this.balance,
+            requests.length,
+            approversCount,
+            manager
+        );
+    }
+
+    // Get amount of all requests
+    function getRequestCount() public view returns (uint256) {
+        return requests.length;
+    }
 }
 
 /*
